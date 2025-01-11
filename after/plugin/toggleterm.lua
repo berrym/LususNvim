@@ -4,5 +4,5 @@ local terminal = require("toggleterm.terminal").Terminal
 local M = {}
 M.lazygit_toggle = create_floating_terminal(terminal, "lazygit")
 M.gdu_toggle = create_floating_terminal(terminal, "gdu")
-M.bashtop_toggle = create_floating_terminal(terminal, "bashtop")
+M.btop_toggle = create_floating_terminal(terminal, "btop")
 _G.terminal = M

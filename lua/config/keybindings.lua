@@ -173,7 +173,7 @@ if enabled(group, "toggleterm") then
   )
   vim.keymap.set("n", "<leader>gg", "<CMD>lua terminal.lazygit_toggle()<CR>", { desc = "open lazygit" })
   vim.keymap.set("n", "<leader>gd", "<CMD>lua terminal.gdu_toggle()<CR>", { desc = "open gdu" })
-  vim.keymap.set("n", "<leader>bt", "<CMD>lua terminal.bashtop_toggle()<CR>", { desc = "open bashtop" })
+  vim.keymap.set("n", "<leader>bt", "<CMD>lua terminal.btop_toggle()<CR>", { desc = "open btop" })
 end
 
 -- Hop
