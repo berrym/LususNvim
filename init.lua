@@ -1,10 +1,10 @@
 require("config.lazy")
 
 for _, source in ipairs({
-  "config.keybindings",
-  "config.autocommands",
-  "config.utils",
   "config.options",
+  "config.keybindings",
+  "config.utils",
+  "config.autocommands",
 }) do
   local status_ok, fault = pcall(require, source)
   if not status_ok then
@@ -28,9 +28,7 @@ end, { desc = "Updates plugins, mason packages, treesitter parsers" })
 if enabled(group, "treesitter") then
   local goption = vim.filetype.get_option
   vim.filetype.get_option = function(filetype, option)
-    return option == "commentstring"
-        and require("ts_context_commentstring.internal").calculate_commentstring()
-      or goption(filetype, option)
+    return option == "commentstring" and require("ts_context_commentstring.internal").calculate_commentstring() or goption(filetype, option)
   end
 end
 

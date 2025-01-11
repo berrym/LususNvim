@@ -171,9 +171,9 @@ if enabled(group, "toggleterm") then
     "<CMD>TermExec go_back=0 direction=float cmd='" .. git_root .. "&& tokei'<CR>",
     { desc = "tokei" }
   )
-  vim.keymap.set("n", "<leader>gg", "<CMD>lua term.lazygit_toggle()<CR>", { desc = "open lazygit" })
-  vim.keymap.set("n", "<leader>gd", "<CMD>lua term.gdu_toggle()<CR>", { desc = "open gdu" })
-  vim.keymap.set("n", "<leader>bt", "<CMD>lua term.bashtop_toggle()<CR>", { desc = "open bashtop" })
+  vim.keymap.set("n", "<leader>gg", "<CMD>lua terminal.lazygit_toggle()<CR>", { desc = "open lazygit" })
+  vim.keymap.set("n", "<leader>gd", "<CMD>lua terminal.gdu_toggle()<CR>", { desc = "open gdu" })
+  vim.keymap.set("n", "<leader>bt", "<CMD>lua terminal.bashtop_toggle()<CR>", { desc = "open bashtop" })
 end
 
 -- Hop

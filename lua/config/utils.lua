@@ -22,15 +22,13 @@ end
 -- helper for cmp completion
 M.has_words_before = function()
   local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0
-    and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 -- creates floating terminal for toggleterm
-M.create_floating_terminal = function(term, cmd)
+M.create_floating_terminal = function(terminal, cmd)
   local instance = nil
   if vim.fn.executable(cmd) == 1 then
-    local terminal = term.Terminal
     instance = terminal:new({
       cmd = cmd,
       dir = "git_dir",
@@ -38,15 +36,15 @@ M.create_floating_terminal = function(term, cmd)
       float_opts = {
         border = "double",
       },
-      on_open = function()
+      on_open = function(term)
         vim.cmd("startinsert!")
+        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
       end,
-      on_close = function()
-        vim.cmd("startinsert!")
+      on_close = function(_)
+          vim.cmd("startinsert!")
       end,
     })
   end
-
   -- check if TermExec function exists
   return function()
     if vim.fn.executable(cmd) == 1 and instance ~= nil then

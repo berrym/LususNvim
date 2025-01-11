@@ -1,25 +1,8 @@
-require("toggleterm").setup({
-  open_mapping = [[<c-t>]],
-  on_open = function(_term)
-    vim.cmd("startinsert!")
-  end,
-  on_close = function(_term)
-    vim.cmd("startinsert!")
-  end,
-  size = 25,
-  direction = "horizontal",
-  float_opts = {
-    border = "curved",
-    winblend = 6,
-  },
-})
-
 local create_floating_terminal = require("config.utils").create_floating_terminal
-local term = require("toggleterm.terminal")
+local terminal = require("toggleterm.terminal").Terminal
 
 local M = {}
-M.lazygit_toggle = create_floating_terminal(term, "lazygit")
-M.gdu_toggle = create_floating_terminal(term, "gdu")
-M.bashtop_toggle = create_floating_terminal(term, "bashtop")
-
-return M
+M.lazygit_toggle = create_floating_terminal(terminal, "lazygit")
+M.gdu_toggle = create_floating_terminal(terminal, "gdu")
+M.bashtop_toggle = create_floating_terminal(terminal, "bashtop")
+_G.terminal = M
