@@ -1,3 +1,21 @@
+local opts = {
+  open_mapping = [[<c-t>]],
+  on_open = function(term)
+    vim.cmd("startinsert!")
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+  end,
+  on_close = function(_)
+    vim.cmd("startinsert!")
+  end,
+  size = 25,
+  direction = "horizontal",
+  float_opts = {
+    border = "curved",
+    winblend = 6,
+  },
+}
+require("toggleterm").setup(opts)
+
 local create_floating_terminal = require("config.utils").create_floating_terminal
 local terminal = require("toggleterm.terminal").Terminal
 
