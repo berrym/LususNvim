@@ -1,9 +1,6 @@
-local lsp = require("lsp-zero").preset({
-  name = "recommended",
-  manage_nvim_cmp = {
-    set_extra_mappings = true,
-  },
-})
+require("mason").setup()
+
+local lsp = require("lsp-zero").preset({})
 
 lsp.on_attach(function(_, bufnr)
   lsp.default_keymaps({ buffer = bufnr })
@@ -16,24 +13,10 @@ lsp.set_sign_icons({
   info = "»",
 })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-local exist, custom_config = pcall(require, "custom.custom_config")
-
-require("mason").setup({})
 require("mason-lspconfig").setup({
   handlers = {
     function(server_name)
-      capabilities = require("cmp_nvim_lsp").default_capabilities()
-      require("lspconfig")[server_name].setup({
-        capabilities = capabilities,
-      })
-    end,
-  },
-})
-
-require("mason-lspconfig").setup({
-  handlers = {
-    function(server_name)
+      local exist, custom_config = pcall(require, "custom.custom_config")
       local configs = exist and type(custom_config) == "table" and custom_config.lsp_configs or {}
       local config = type(configs) == "table" and configs[server_name] or {}
       require("lspconfig")[server_name].setup(config)

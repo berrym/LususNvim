@@ -28,9 +28,13 @@ end, { desc = "Updates plugins, mason packages, treesitter parsers" })
 if enabled(group, "treesitter") then
   local goption = vim.filetype.get_option
   vim.filetype.get_option = function(filetype, option)
-    return option == "commentstring" and require("ts_context_commentstring.internal").calculate_commentstring() or goption(filetype, option)
+    return option == "commentstring"
+        and require("ts_context_commentstring.internal").calculate_commentstring()
+      or goption(filetype, option)
   end
 end
+
+pcall(require, "lsp-zero")
 
 if exist and type(custom_config) == "table" and custom_config.custom_conf then
   custom_config.custom_conf()

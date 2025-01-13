@@ -73,7 +73,7 @@ local core_plugins = {
     event = "VimEnter",
     branch = "v3.x",
     config = function()
-      require("mason").setup()
+      require("config.lsp")
     end,
     dependencies = {
       { "neovim/nvim-lspconfig" },
