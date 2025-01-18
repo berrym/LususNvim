@@ -96,7 +96,12 @@ local core_plugins = {
     cond = enabled(group, "neotree"),
     event = "VeryLazy",
     branch = "v3.x",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+      -- "3rd/image.nvim", -- requires luarocks
+    },
   },
   {
     "Shatur/neovim-session-manager",
@@ -192,8 +197,8 @@ local core_plugins = {
         "nvim-treesitter/nvim-treesitter-context",
         cond = enabled(group, "context"),
       },
-      { "windwp/nvim-ts-autotag", cond = enabled(group, "autotag") },
-      { "HiPhish/rainbow-delimiters.nvim", cond = enabled(group, "rainbow") },
+      { "windwp/nvim-ts-autotag",                     cond = enabled(group, "autotag") },
+      { "HiPhish/rainbow-delimiters.nvim",            cond = enabled(group, "rainbow") },
       { "JoosepAlviste/nvim-ts-context-commentstring" },
     },
   },
@@ -292,4 +297,11 @@ local core_plugins = {
   custom_plugins,
 }
 
-require("lazy").setup(core_plugins, {})
+require("lazy").setup(core_plugins, {
+  defaults = { lazy = true },
+  performance = {
+    rtp = {
+      disabled_plugins = { "tohtml", "gzip", "zipPlugin", "netrwPlugin", "tarPlugin" },
+    },
+  },
+})
