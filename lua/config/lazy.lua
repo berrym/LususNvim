@@ -1,6 +1,6 @@
 -- config/lazy.lua
 
-local utils = require("config.utils")
+local notify_info = require("config.utils").notify_info
 local enabled = require("config.utils").enabled
 local exist, custom_config = pcall(require, "custom.custom_config")
 local group = exist and type(custom_config) == "table" and custom_config.enable_plugins or {}
@@ -19,7 +19,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local core_plugins = {
+local plugins = {
   -- plugins go here
   {
     "stevearc/aerial.nvim",
@@ -177,6 +177,9 @@ local core_plugins = {
     "rcarriga/nvim-notify",
     cond = enabled(group, "notify"),
     lazy = false,
+    config = function()
+      vim.notify = require("notify")
+    end,
   },
   {
     "kylechui/nvim-surround",
@@ -199,7 +202,20 @@ local core_plugins = {
       },
       { "windwp/nvim-ts-autotag",                     cond = enabled(group, "autotag") },
       { "HiPhish/rainbow-delimiters.nvim",            cond = enabled(group, "rainbow") },
-      { "JoosepAlviste/nvim-ts-context-commentstring" },
+      { "JoosepAlviste/nvim-ts-context-commentstring",
+        config = function()
+          require('ts_context_commentstring').setup {
+            enable_autocmd = false,
+          }
+          -- fix commentstrings to work with native nvim commenting
+          local get_option = vim.filetype.get_option
+          vim.filetype.get_option = function(filetype, option)
+            return option == "commentstring"
+            and require("ts_context_commentstring.internal").calculate_commentstring()
+            or get_option(filetype, option)
+          end
+        end,
+      },
     },
   },
   {
@@ -272,7 +288,7 @@ local core_plugins = {
       {
         "<leader>God",
         function()
-          utils.notify_info(
+          notify_info(
             "I am lususnaturae, a natural spiritual force and whimsical child of Gods.",
             "<==> Lusus Naturae <==>"
           )
@@ -297,7 +313,7 @@ local core_plugins = {
   custom_plugins,
 }
 
-require("lazy").setup(core_plugins, {
+require("lazy").setup(plugins, {
   defaults = { lazy = true },
   performance = {
     rtp = {

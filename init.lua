@@ -1,4 +1,4 @@
--- disable netrw at the very start of your init.lua
+-- disable netrw at the very start of init.lua
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -16,30 +16,13 @@ for _, source in ipairs({
   end
 end
 
-local enabled = require("config.utils").enabled
-local exist, custom_config = pcall(require, "custom.custom_config")
-local group = exist and type(custom_config) == "table" and custom_config.enable_plugins or {}
-
-if enabled(group, "notify") then
-  vim.notify = require("notify")
-end
-
 vim.api.nvim_create_user_command("LususUpdate", function()
   require("config.utils").update_all()
 end, { desc = "Updates plugins, mason packages, treesitter parsers" })
 
--- fix commentstrings to work with native nvim commenting
-if enabled(group, "treesitter") then
-  local goption = vim.filetype.get_option
-  vim.filetype.get_option = function(filetype, option)
-    return option == "commentstring"
-        and require("ts_context_commentstring.internal").calculate_commentstring()
-      or goption(filetype, option)
-  end
-end
-
 pcall(require, "lsp-zero")
 
+local exist, custom_config = pcall(require, "custom.custom_config")
 if exist and type(custom_config) == "table" and custom_config.custom_conf then
   custom_config.custom_conf()
 end
