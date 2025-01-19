@@ -1,4 +1,4 @@
--- disable netrw at the very start of init.lua
+-- disable netrw
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -9,6 +9,7 @@ for _, source in ipairs({
   "config.keybindings",
   "config.utils",
   "config.autocommands",
+  "config.lsp",
 }) do
   local status_ok, fault = pcall(require, source)
   if not status_ok then

@@ -1,33 +1,48 @@
 require("mason").setup()
-
-local lsp = require("lsp-zero").preset({})
-
-lsp.on_attach(function(_, bufnr)
-  lsp.default_keymaps({ buffer = bufnr })
-end)
-
-lsp.set_sign_icons({
-  error = "✘",
-  warn = "▲",
-  hint = "⚑",
-  info = "»",
-})
-
 require("mason-lspconfig").setup({
   handlers = {
     function(server_name)
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local exist, custom_config = pcall(require, "custom.custom_config")
       local configs = exist and type(custom_config) == "table" and custom_config.lsp_configs or {}
       local config = type(configs) == "table" and configs[server_name] or {}
-      require("lspconfig")[server_name].setup(config)
+      require("lspconfig")[server_name].setup({
+        capabilities = capabilities,
+        config = config,
+      })
     end,
   },
 })
 
-lsp.setup()
+vim.api.nvim_create_autocmd("LspAttach", {
+  desc = "LSP actions",
+  callback = function(event)
+    local opts = { buffer = event.buf }
+    vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
+    vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
+    vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
+    vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
+    vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
+    vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
+    vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
+    vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+    vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
+    vim.keymap.set("n", "<F4>", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+  end,
+})
+
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "✘",
+      [vim.diagnostic.severity.WARN] = "▲",
+      [vim.diagnostic.severity.HINT] = "⚑",
+      [vim.diagnostic.severity.INFO] = "»",
+    },
+  },
+})
 
 local cmp = require("cmp")
-local cmp_action = require("lsp-zero").cmp_action()
 local lspkind = require("lspkind")
 
 require("luasnip.loaders.from_vscode").lazy_load()
@@ -44,13 +59,52 @@ cmp.setup({
   completion = {
     completeopt = "menu,menuone,noinsert",
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     ["<CR>"] = cmp.mapping.confirm({ select = false }),
-    ["<Tab>"] = cmp_action.luasnip_supertab(),
-    ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
-    ["<C-f>"] = cmp_action.luasnip_jump_forward(),
-    ["<C-b>"] = cmp_action.luasnip_jump_backward(),
-  },
+    -- Super tab
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      local luasnip = require("luasnip")
+      local col = vim.fn.col(".") - 1
+      if cmp.visible() then
+        cmp.select_next_item({ behavior = "select" })
+      elseif luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
+      elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
+        fallback()
+      else
+        cmp.complete()
+      end
+    end, { "i", "s" }),
+    -- Super shift tab
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      local luasnip = require("luasnip")
+      if cmp.visible() then
+        cmp.select_prev_item({ behavior = "select" })
+      elseif luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    -- Jump to the next snippet placeholder
+    ["<C-f>"] = cmp.mapping(function(fallback)
+      local luasnip = require("luasnip")
+      if luasnip.locally_jumpable(1) then
+        luasnip.jump(1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    -- Jump to the previous snippet placeholder
+    ["<C-b>"] = cmp.mapping(function(fallback)
+      local luasnip = require("luasnip")
+      if luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+  }),
   window = {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
@@ -62,10 +116,10 @@ cmp.setup({
         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
         -- can also be a function to dynamically calculate max width such as
         -- menu = function() return math.floor(0.45 * vim.o.columns) end,
-        menu = 50, -- leading text (labelDetails)
-        abbr = 50, -- actual suggestion item
+        menu = 50,              -- leading text (labelDetails)
+        abbr = 50,              -- actual suggestion item
       },
-      ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+      ellipsis_char = "...",    -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
       show_labelDetails = true, -- show labelDetails in menu. Disabled by default
 
       -- The function below will be called before any actual modifications from lspkind

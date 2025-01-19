@@ -1,5 +1,3 @@
--- config/lazy.lua
-
 local notify_info = require("config.utils").notify_info
 local enabled = require("config.utils").enabled
 local exist, custom_config = pcall(require, "custom.custom_config")
@@ -20,7 +18,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-  -- plugins go here
   {
     "stevearc/aerial.nvim",
     cond = enabled(group, "aerial"),
@@ -68,18 +65,19 @@ local plugins = {
     event = "VimEnter",
   },
   {
-    "VonHeikemen/lsp-zero.nvim",
-    cond = enabled(group, "lsp_zero"),
+    "neovim/nvim-lspconfig",
+    cond = enabled("lsp"),
     event = "VimEnter",
-    branch = "v3.x",
-    config = function()
-      require("config.lsp")
-    end,
-    dependencies = {
-      { "neovim/nvim-lspconfig" },
-      { "williamboman/mason.nvim" },
-      { "williamboman/mason-lspconfig.nvim" },
-    },
+  },
+  {
+    "williamboman/mason.nvim",
+    cond = enabled("lsp"),
+    event = "VimEnter",
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    cond = enabled("lsp"),
+    event = "VimEnter",
   },
   {
     "folke/neodev.nvim",
@@ -202,17 +200,18 @@ local plugins = {
       },
       { "windwp/nvim-ts-autotag",                     cond = enabled(group, "autotag") },
       { "HiPhish/rainbow-delimiters.nvim",            cond = enabled(group, "rainbow") },
-      { "JoosepAlviste/nvim-ts-context-commentstring",
+      {
+        "JoosepAlviste/nvim-ts-context-commentstring",
         config = function()
-          require('ts_context_commentstring').setup {
+          require("ts_context_commentstring").setup({
             enable_autocmd = false,
-          }
+          })
           -- fix commentstrings to work with native nvim commenting
           local get_option = vim.filetype.get_option
           vim.filetype.get_option = function(filetype, option)
             return option == "commentstring"
-            and require("ts_context_commentstring.internal").calculate_commentstring()
-            or get_option(filetype, option)
+                and require("ts_context_commentstring.internal").calculate_commentstring()
+                or get_option(filetype, option)
           end
         end,
       },
@@ -229,6 +228,7 @@ local plugins = {
   },
   {
     "AstroNvim/astrotheme",
+    cond = enabled(group, "astrotheme"),
     lazy = false,
   },
   { "nvim-lua/plenary.nvim" },
