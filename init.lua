@@ -20,8 +20,6 @@ vim.api.nvim_create_user_command("LususUpdate", function()
   require("config.utils").update_all()
 end, { desc = "Updates plugins, mason packages, treesitter parsers" })
 
-pcall(require, "lsp-zero")
-
 local exist, custom_config = pcall(require, "custom.custom_config")
 if exist and type(custom_config) == "table" and custom_config.custom_conf then
   custom_config.custom_conf()

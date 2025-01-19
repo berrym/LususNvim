@@ -97,9 +97,9 @@ autocmd("BufEnter", {
   callback = function()
     local layout = vim.api.nvim_call_function("winlayout", {})
     if
-      layout[1] == "leaf"
-      and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "Trouble"
-      and layout[3] == nil
+        layout[1] == "leaf"
+        and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "Trouble"
+        and layout[3] == nil
     then
       vim.cmd("confirm quit")
     end
@@ -107,9 +107,8 @@ autocmd("BufEnter", {
 })
 
 -- Set indentation to 2 spaces based on filetype
-augroup("setIndent2", { clear = true })
 autocmd("Filetype", {
-  group = "setIndent2",
+  group = augroup("setIndent2", { clear = true }),
   pattern = {
     "lua",
     "css",
@@ -128,13 +127,11 @@ autocmd("Filetype", {
     vim.opt_local.softtabstop = 2
     vim.opt_local.expandtab = true
   end,
-  -- command = "setlocal shiftwidth=2 tabstop=2"
 })
 
 -- Set indentation to 4 spaces based on filetype
-augroup("setIndent4", { clear = true })
 autocmd("Filetype", {
-  group = "setIndent4",
+  group = augroup("setIndent4", { clear = true }),
   pattern = {
     "c",
     "cpp",
@@ -155,18 +152,5 @@ autocmd("Filetype", {
     vim.opt_local.tabstop = 4
     vim.opt_local.softtabstop = 4
     vim.opt_local.expandtab = true
-  end,
-  -- command = "setlocal shiftwidth=4 tabstop=4"
-})
-
--- Format files using LSP before Save
-augroup("lspFormatOnSave", { clear = true })
-autocmd("BufWritePre", {
-  group = "lspFormatOnSave",
-  buffer = vim.api.nvim_get_current_buf(),
-  callback = function()
-    -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-    -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
-    vim.lsp.buf.format({ async = false })
   end,
 })
