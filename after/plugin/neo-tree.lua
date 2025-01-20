@@ -3,12 +3,15 @@ require("neo-tree").setup({
   popup_border_style = "rounded",
   enable_git_status = true,
   enable_diagnostics = true,
+  open_files_do_not_replace_types = { "terminal", "trouble", "qf" },
+  sort_case_insensitive = false,
   filesystem = {
+    filtered_items = { visible = true },
     follow_current_file = {
       enabled = true,
       leave_dirs_open = false,
     },
-    hijack_netrw_behavior = "open_default",
+    hijack_netrw_behavior = "open_current",
   },
   buffers = {
     follow_current_file = {

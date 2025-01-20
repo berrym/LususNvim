@@ -74,7 +74,9 @@ end
 
 -- NeoTree
 if enabled(group, "neotree") then
-  vim.keymap.set("n", "<leader>nt", "<CMD>Neotree reveal left<CR>")
+  vim.keymap.set("n", "<leader>nn", "<CMD>Neotree toggle current<CR>")
+  vim.keymap.set("n", "<leader>nl", "<CMD>Neotree toggle left<CR>")
+  vim.keymap.set("n", "<leader>nr", "<CMD>Neotree toggle right<CR>")
   vim.keymap.set("n", "<leader>nf", "<CMD>Neotree reveal float<CR>")
 end
 
@@ -171,7 +173,12 @@ if enabled(group, "toggleterm") then
     "<CMD>TermExec go_back=0 direction=float cmd='" .. git_root .. "&& tokei'<CR>",
     { desc = "tokei" }
   )
-  vim.keymap.set("n", "<leader>gg", "<CMD>lua terminal.lazygit_toggle()<CR>", { desc = "open lazygit" })
+  vim.keymap.set(
+    "n",
+    "<leader>gg",
+    "<CMD>lua terminal.lazygit_toggle()<CR>",
+    { desc = "open lazygit" }
+  )
   vim.keymap.set("n", "<leader>gd", "<CMD>lua terminal.gdu_toggle()<CR>", { desc = "open gdu" })
   vim.keymap.set("n", "<leader>bt", "<CMD>lua terminal.btop_toggle()<CR>", { desc = "open btop" })
 end
