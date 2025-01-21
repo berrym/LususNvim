@@ -198,8 +198,8 @@ local plugins = {
         "nvim-treesitter/nvim-treesitter-context",
         cond = enabled(group, "context"),
       },
-      { "windwp/nvim-ts-autotag",                     cond = enabled(group, "autotag") },
-      { "HiPhish/rainbow-delimiters.nvim",            cond = enabled(group, "rainbow") },
+      { "windwp/nvim-ts-autotag", cond = enabled(group, "autotag") },
+      { "HiPhish/rainbow-delimiters.nvim", cond = enabled(group, "rainbow") },
       {
         "JoosepAlviste/nvim-ts-context-commentstring",
         config = function()
@@ -211,7 +211,7 @@ local plugins = {
           vim.filetype.get_option = function(filetype, option)
             return option == "commentstring"
                 and require("ts_context_commentstring.internal").calculate_commentstring()
-                or get_option(filetype, option)
+              or get_option(filetype, option)
           end
         end,
       },

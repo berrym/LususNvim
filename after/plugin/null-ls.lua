@@ -5,7 +5,7 @@ local sources = exist
     and type(custom_config) == "table"
     and custom_config.setup_sources
     and custom_config.setup_sources(null_ls.builtins)
-    or {}
+  or {}
 
 null_ls.setup({
   on_attach = function(client, bufnr)
