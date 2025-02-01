@@ -129,20 +129,37 @@ local plugins = {
     cond = enabled(group, "autopairs"),
     event = "InsertEnter",
   },
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   cond = enabled(group, "cmp"),
+  --   event = "InsertEnter",
+  --   dependencies = {
+  --     { "onsails/lspkind.nvim" },
+  --     { "hrsh7th/cmp-nvim-lsp" },
+  --     { "hrsh7th/cmp-buffer" },
+  --     { "hrsh7th/cmp-path" },
+  --     { "saadparwaiz1/cmp_luasnip" },
+  --     { "hrsh7th/cmp-nvim-lua" },
+  --     { "L3MON4D3/LuaSnip" },
+  --     { "rafamadriz/friendly-snippets" },
+  --   },
+  -- },
   {
-    "hrsh7th/nvim-cmp",
+    "saghen/blink.cmp",
     cond = enabled(group, "cmp"),
     event = "InsertEnter",
+    -- optional: provides snippets for the snippet source
     dependencies = {
-      { "onsails/lspkind.nvim" },
-      { "hrsh7th/cmp-nvim-lsp" },
-      { "hrsh7th/cmp-buffer" },
-      { "hrsh7th/cmp-path" },
-      { "saadparwaiz1/cmp_luasnip" },
-      { "hrsh7th/cmp-nvim-lua" },
-      { "L3MON4D3/LuaSnip" },
       { "rafamadriz/friendly-snippets" },
+      { "L3MON4D3/LuaSnip",            version = "v2.*" },
+      { "echasnovski/mini.snippets" },
     },
+    -- use a release tag to download pre-built binaries
+    version = "*",
+    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source using latest nightly rust with:
+    -- build = 'nix run .#build-plugin',
   },
   { "NvChad/nvim-colorizer.lua", cond = enabled(group, "colorizer"), event = "VimEnter" },
   {
@@ -198,8 +215,8 @@ local plugins = {
         "nvim-treesitter/nvim-treesitter-context",
         cond = enabled(group, "context"),
       },
-      { "windwp/nvim-ts-autotag", cond = enabled(group, "autotag") },
-      { "HiPhish/rainbow-delimiters.nvim", cond = enabled(group, "rainbow") },
+      { "windwp/nvim-ts-autotag",                     cond = enabled(group, "autotag") },
+      { "HiPhish/rainbow-delimiters.nvim",            cond = enabled(group, "rainbow") },
       {
         "JoosepAlviste/nvim-ts-context-commentstring",
         config = function()
@@ -211,7 +228,7 @@ local plugins = {
           vim.filetype.get_option = function(filetype, option)
             return option == "commentstring"
                 and require("ts_context_commentstring.internal").calculate_commentstring()
-              or get_option(filetype, option)
+                or get_option(filetype, option)
           end
         end,
       },
@@ -317,7 +334,7 @@ require("lazy").setup(plugins, {
   defaults = { lazy = true },
   performance = {
     rtp = {
-      disabled_plugins = { "tohtml", "gzip", "zipPlugin", "netrwPlugin", "tarPlugin" },
+      disabled_plugins = { "tohtml", "gzip", "zipPlugin", "tarPlugin" },
     },
   },
 })
