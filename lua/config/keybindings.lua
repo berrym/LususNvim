@@ -5,6 +5,39 @@ vim.g.mapleader = " " -- the leader key is the spacebar
 
 local M = {}
 
+-- Bufferline
+if enabled(group, "bufferline") then
+  vim.keymap.set("n", "<leader>b", "", { desc = "Buffers" })
+  vim.keymap.set("n", "<leader>bj", "<CMD>BufferLinePick<CR>", { desc = "Jump" })
+  vim.keymap.set("n", "<leader>bf", "<CMD>Telescope buffers previewer=false<CR>", { desc = "Find" })
+  vim.keymap.set("n", "<leader>bb", "<CMD>BufferLineCyclePrev<CR>", { desc = "Previous" })
+  vim.keymap.set("n", "<leader>bn", "<CMD>BufferLineCycleNext<CR>", { desc = "Next" })
+  vim.keymap.set(
+    "n",
+    "<leader>bW",
+    "<CMD>noautocmd w<CR>",
+    { desc = "Save without formatting (noautocmd)" }
+  )
+  vim.keymap.set(
+    "n",
+    "<leader>be",
+    "<CMD>BufferLinePickClose<CR>",
+    { desc = "Pick buffer to close" }
+  )
+  vim.keymap.set(
+    "n",
+    "<leader>bh",
+    "<CMD>BufferLineCloseLeft<CR>",
+    { desc = "Close all to the left" }
+  )
+  vim.keymap.set(
+    "n",
+    "<leader>bl",
+    "<CMD>BufferLineCloseRight<CR>",
+    { desc = "Close all to the right" }
+  )
+end
+
 -- Image Pasting
 if enabled(group, "img_paste") then
   vim.keymap.set("n", "<leader>p", "<CMD>PasteImage<CR>", { desc = "Paste clipboard image" })
@@ -13,16 +46,28 @@ end
 -- DAP
 if enabled(group, "dap") then
   _G.dap = require("dap")
-  vim.keymap.set("n", "<leader>dc", "<CMD>lua dap.continue()<CR>")
-  vim.keymap.set("n", "<leader>dn", "<CMD>lua dap.step_over()<CR>")
-  vim.keymap.set("n", "<leader>di", "<CMD>lua dap.step_into()<CR>")
-  vim.keymap.set("n", "<leader>do", "<CMD>lua dap.step_out()<CR>")
-  vim.keymap.set("n", "<leader>db", "<CMD>lua dap.toggle_breakpoint()<CR>")
-  vim.keymap.set("n", "<leader>dq", "<CMD>lua dap.disconnect({ terminateDebuggee = true })<CR>")
+  vim.keymap.set("n", "<leader>d", "", { desc = "Debugging" })
+  vim.keymap.set("n", "<leader>dc", "<CMD>lua dap.continue()<CR>", { desc = "continue" })
+  vim.keymap.set("n", "<leader>dn", "<CMD>lua dap.step_over()<CR>", { desc = "step over" })
+  vim.keymap.set("n", "<leader>di", "<CMD>lua dap.step_into()<CR>", { desc = "step into" })
+  vim.keymap.set("n", "<leader>do", "<CMD>lua dap.step_out()<CR>", { desc = "step out" })
+  vim.keymap.set(
+    "n",
+    "<leader>db",
+    "<CMD>lua dap.toggle_breakpoint()<CR>",
+    { desc = "toggle breakpoint" }
+  )
+  vim.keymap.set(
+    "n",
+    "<leader>dq",
+    "<CMD>lua dap.disconnect({ terminateDebuggee = true })<CR>",
+    { desc = "quit" }
+  )
 end
 
 -- Trouble
 if enabled(group, "trouble") then
+  vim.keymap.set("n", "<leader>x", "", { desc = "Diagnostics" })
   vim.keymap.set(
     "n",
     "<leader>xx",
@@ -63,30 +108,47 @@ end
 
 -- UFO
 if enabled(group, "ufo") then
-  vim.keymap.set("n", "zR", "<CMD>lua require('ufo').openAllFolds()<CR>")
-  vim.keymap.set("n", "zM", "<CMD>lua require('ufo').closeAllFolds()<CR>")
+  vim.keymap.set(
+    "n",
+    "zR",
+    "<CMD>lua require('ufo').openAllFolds()<CR>",
+    { desc = "Open all folds" }
+  )
+  vim.keymap.set(
+    "n",
+    "zM",
+    "<CMD>lua require('ufo').closeAllFolds()<CR>",
+    { desc = "Close all folds" }
+  )
 end
 
 -- ZenMode
 if enabled(group, "zen") then
-  vim.keymap.set("n", "<leader>zm", "<CMD>ZenMode<CR>")
+  vim.keymap.set("n", "<leader>zm", "<CMD>ZenMode<CR>", { desc = "Toggle zen mode" })
 end
 
 -- NeoTree
 if enabled(group, "neotree") then
-  vim.keymap.set("n", "<leader>nn", "<CMD>Neotree toggle current<CR>")
-  vim.keymap.set("n", "<leader>nl", "<CMD>Neotree toggle left<CR>")
-  vim.keymap.set("n", "<leader>nr", "<CMD>Neotree toggle right<CR>")
-  vim.keymap.set("n", "<leader>nf", "<CMD>Neotree reveal float<CR>")
+  vim.keymap.set("n", "<leader>n", "", { desc = "Explorer" })
+  vim.keymap.set(
+    "n",
+    "<leader>nn",
+    "<CMD>Neotree toggle current<CR>",
+    { desc = "Toggle fullscreen" }
+  )
+  vim.keymap.set("n", "<leader>nl", "<CMD>Neotree toggle left<CR>", { desc = "Toggle left" })
+  vim.keymap.set("n", "<leader>nr", "<CMD>Neotree toggle right<CR>", { desc = "Toggle right" })
+  vim.keymap.set("n", "<leader>nf", "<CMD>Neotree reveal float<CR>", { desc = "Toggle float" })
 end
 
 -- Aerial
 if enabled(group, "aerial") then
-  vim.keymap.set("n", "<leader>at", "<CMD>AerialToggle<CR>")
+  vim.keymap.set("n", "<leader>a", "", { desc = "Code map" })
+  vim.keymap.set("n", "<leader>at", "<CMD>AerialToggle<CR>", { desc = "Toggle aerial" })
 end
 
 -- Searching and Highlighting
-vim.keymap.set("n", "m", "<CMD>noh<CR>")
+vim.keymap.set("n", "m", "<CMD>noh<CR>", { desc = "Search no highlight" })
 
 -- Movement
 -- in insert mode, type <c-d> and your cursor will move past the next separator
@@ -107,6 +169,7 @@ vim.keymap.set("c", "<C-n>", "<Down>")
 
 -- Telescope
 if enabled(group, "telescope") then
+  vim.keymap.set("n", "<leader>f", "", { desc = "Find" })
   vim.keymap.set(
     "n",
     "<leader>ff",
@@ -151,8 +214,9 @@ end
 
 -- Session
 if enabled(group, "session_manager") then
+  vim.keymap.set("n", "<leader>s", "", { desc = "Sessions" })
   vim.keymap.set("n", "<leader>ss", "<CMD>SessionManager save_current_session<CR>")
-  vim.keymap.set("n", "<leader>o", "<CMD>SessionManager load_session<CR>")
+  vim.keymap.set("n", "<leader>so", "<CMD>SessionManager load_session<CR>")
 end
 
 -- ToggleTerm
