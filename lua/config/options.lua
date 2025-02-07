@@ -3,7 +3,7 @@ vim.opt.shortmess:append("sIW")
 
 vim_opts({
   opt = {
-    autochdir = true,
+    autochdir = false,  -- deprecated, breaks with some plugins, config.autocommands handles this
     breakindent = true,
     breakindentopt = "shift:2,min:40,sbr",
     clipboard = "unnamedplus",

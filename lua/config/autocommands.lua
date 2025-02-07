@@ -97,9 +97,9 @@ autocmd("BufEnter", {
   callback = function()
     local layout = vim.api.nvim_call_function("winlayout", {})
     if
-      layout[1] == "leaf"
-      and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "Trouble"
-      and layout[3] == nil
+        layout[1] == "leaf"
+        and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "Trouble"
+        and layout[3] == nil
     then
       vim.cmd("confirm quit")
     end
@@ -152,5 +152,27 @@ autocmd("Filetype", {
     vim.opt_local.tabstop = 4
     vim.opt_local.softtabstop = 4
     vim.opt_local.expandtab = true
+  end,
+})
+
+-- Replace autochdir
+autocmd("BufWinEnter", {
+  group = augroup("autochdir", { clear = true }),
+  pattern = "*",
+  callback = function()
+    local ignoredFT = {
+      "gitcommit",
+      "NeogitCommitMessage",
+      "DiffviewFileHistory",
+      "",
+    }
+    if
+        not vim.bo.modifiable
+        or vim.tbl_contains(ignoredFT, vim.bo.filetype)
+        or not (vim.fn.expand("%:p"):find("^/"))
+    then
+      return
+    end
+    vim.cmd.cd(vim.fn.expand("%:p:h"))
   end,
 })
