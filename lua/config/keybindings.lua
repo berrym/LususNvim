@@ -5,6 +5,11 @@ vim.g.mapleader = " " -- the leader key is the spacebar
 
 local M = {}
 
+-- Alpha
+if enabled(group, "alpha") then
+  vim.keymap.set("n", "<leader>;", "<CMD>Alpha<CR>", { desc = "Dashboard" })
+end
+
 -- Bufferline
 if enabled(group, "bufferline") then
   vim.keymap.set("n", "<leader>b", "", { desc = "Buffers" })
@@ -46,7 +51,7 @@ end
 -- DAP
 if enabled(group, "dap") then
   _G.dap = require("dap")
-  vim.keymap.set("n", "<leader>d", "", { desc = "Debugging" })
+  vim.keymap.set("n", "<leader>d", "", { desc = "+Debugging" })
   vim.keymap.set("n", "<leader>dc", "<CMD>lua dap.continue()<CR>", { desc = "continue" })
   vim.keymap.set("n", "<leader>dn", "<CMD>lua dap.step_over()<CR>", { desc = "step over" })
   vim.keymap.set("n", "<leader>di", "<CMD>lua dap.step_into()<CR>", { desc = "step into" })
