@@ -71,7 +71,6 @@ require("blink.cmp").setup({
     --   end,
     --   'select_next'
     -- },
-    cmdline = {},
   },
 
   appearance = {
