@@ -23,6 +23,7 @@ if enabled(group, "session") and enabled(group, "project") then
     dashboard.button("l", "🗘  > Open last session", ":SessionManager load_last_session<CR>"),
     dashboard.button("o", "  > Open session", ":SessionManager load_session<CR>"),
     dashboard.button("p", "  > Open project", ":Telescope projects<CR>"),
+    dashboard.button("q", "󰩈  > Quit", "<CMD>qall<CR>"),
   }
 end
 
@@ -34,6 +35,7 @@ if not enabled(group, "session") and enabled(group, "project") then
     -- dashboard.button("l", "🗘  > Open last session", ":SessionManager load_last_session<CR>"),
     -- dashboard.button("o", "  > Open session", ":SessionManager load_session<CR>"),
     dashboard.button("p", "  > Open project", ":Telescope projects<CR>"),
+    dashboard.button("q", "󰩈  > Quit", "<CMD>qall<CR>"),
   }
 end
 
@@ -45,6 +47,7 @@ if enabled(group, "session") and not enabled(group, "project") then
     dashboard.button("l", "🗘  > Open last session", ":SessionManager load_last_session<CR>"),
     dashboard.button("o", "  > Open session", ":SessionManager load_session<CR>"),
     -- dashboard.button("p", "  > Open project", ":Telescope projects<CR>"),
+    dashboard.button("q", "󰩈  > Quit", "<CMD>qall<CR>"),
   }
 end
 
@@ -56,6 +59,7 @@ if not enabled(group, "session") and not enabled(group, "project") then
     -- dashboard.button("l", "🗘  > Open last session", ":SessionManager load_last_session<CR>"),
     -- dashboard.button("o", "  > Open session", ":SessionManager load_session<CR>"),
     -- dashboard.button("p", "  > Open project", ":Telescope projects<CR>"),
+    dashboard.button("q", "󰩈  > Quit", "<CMD>qall<CR>"),
   }
 end
 
