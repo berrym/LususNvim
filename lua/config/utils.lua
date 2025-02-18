@@ -11,6 +11,12 @@ M.vim_opts = function(options)
   end
 end
 
+-- check if inside a working git repository
+M.is_git_repo = function()
+  local _ = vim.fn.system("git rev-parse --is-inside-work-tree")
+  return vim.v.shell_error == 0
+end
+
 -- creating new file for alpha nvim buffer
 M.create_new_file = function()
   local filename = vim.fn.input("Enter the filename: ")
@@ -23,7 +29,7 @@ end
 M.has_words_before = function()
   local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0
-    and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 -- creates floating terminal for toggleterm
