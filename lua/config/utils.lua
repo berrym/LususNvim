@@ -41,7 +41,7 @@ M.create_floating_terminal = function(terminal, cmd)
       dir = "git_dir",
       direction = "float",
       float_opts = {
-        border = "double",
+        border = "rounded",
       },
       on_open = function(term)
         vim.cmd("startinsert!")
