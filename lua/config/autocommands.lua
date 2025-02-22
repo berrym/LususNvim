@@ -1,6 +1,8 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+local notify_info = require("config.utils").notify_info
+
 local exist, custom_config = pcall(require, "custom.custom_config")
 local group = exist and type(custom_config) == "table" and custom_config.autocommands or {}
 local plugin = exist and type(custom_config) == "table" and custom_config.enable_plugins or {}
@@ -62,7 +64,7 @@ if enabled(group, "session_saved_notification") then
     desc = "notify session saved",
     group = augroup("session save", { clear = true }),
     pattern = "SessionSavePost",
-    command = "lua vim.notify('Session Saved', 'info')",
+    command = "lua notify_info('Session Saved')",
   })
 end
 

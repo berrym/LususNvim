@@ -63,7 +63,7 @@ M.create_floating_terminal = function(terminal, cmd)
     if vim.fn.executable(cmd) == 1 and instance ~= nil then
       instance:toggle()
     else
-      vim.notify("Command not found: " .. cmd .. ". Ensure it is installed.", "error")
+      M.notify_error("Command not found: " .. cmd .. ". Ensure it is installed.")
     end
   end
 end
@@ -83,15 +83,15 @@ end
 
 -- updates everything in LususNvim
 M.update_all = function()
-  vim.notify("Pulling latest changes...")
+  M.notify_info("Pulling latest changes...")
   vim.fn.jobstart({ "git", "pull", "--rebase" })
   require("lazy").sync({ wait = true })
-  vim.notify("Updating Mason packages...")
+  M.notify_info("Updating Mason packages...")
   M.update_mason()
   -- make sure treesitter is loaded so it can update parsers
   require("nvim-treesitter")
   vim.cmd("TSUpdate")
-  vim.notify("LususNvim updated!", "info")
+  M.notify_info("LususNvim updated!")
 end
 
 -- check if attached lsp supports formatting
@@ -111,7 +111,15 @@ M.enabled = function(group, opt)
 end
 
 M.notify_info = function(body, header)
-  vim.notify(body, "info", { title = header })
+  message.notify(body, "info", { title = header })
+end
+
+M.notify_warn = function(body, header)
+  message.notify(body, "warn", { title = header })
+end
+
+M.notify_error = function(body, header)
+  message.notify(body, "error", { title = header })
 end
 
 M.colorscheme = function(scheme)

@@ -194,6 +194,7 @@ local plugins = {
     lazy = false,
     config = function()
       vim.notify = require("notify")
+      _G.message = require("notify")
     end,
   },
   {
