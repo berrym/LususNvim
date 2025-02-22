@@ -1,2 +1,2 @@
-local utils = require("config.utils")
-utils.colorscheme("astromars")
+local colors = require("config.utils").colors
+colors("astromars")

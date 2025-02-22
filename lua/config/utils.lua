@@ -122,7 +122,7 @@ M.notify_error = function(body, header)
   message.notify(body, "error", { title = header })
 end
 
-M.colorscheme = function(scheme)
+M.colors = function(scheme)
   vim.cmd.colorscheme(scheme)
 end
 
