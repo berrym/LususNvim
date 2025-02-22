@@ -15,7 +15,7 @@ dashboard.section.header.val = {
 local buttons = {
   dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
   dashboard.button("n", "  New file", ":lua require('config.utils').create_new_file()<CR>"),
-  dashboard.button("s", "  New scratch file", ":ene!<CR>"),
+  dashboard.button("b", "  New buffer", ":ene!<CR>"),
   dashboard.button("r", "  Recent", ":Telescope oldfiles<CR>"),
   dashboard.button("t", "󱎸  Find text", ":Telescope live_grep<CR>"),
 }
