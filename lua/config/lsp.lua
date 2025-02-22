@@ -8,7 +8,7 @@ if enabled(group, "lsp") then
     handlers = {
       function(server_name)
         -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
-        local exist, custom_config = pcall(require, "custom.custom_config")
+        exist, custom_config = pcall(require, "custom.custom_config")
         local configs = exist and type(custom_config) == "table" and custom_config.lsp_configs or {}
         local config = type(configs) == "table" and configs[server_name] or {}
         local capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
@@ -48,6 +48,9 @@ if enabled(group, "lsp") then
     },
   })
 end
+
+exist, custom_config = pcall(require, "custom.custom_config")
+group = exist and type(custom_config) == "table" and custom_config.enable_plugins or {}
 
 if enabled(group, "cmp") then
   require("blink.cmp").setup({
