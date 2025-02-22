@@ -34,11 +34,6 @@ local plugins = {
     lazy = false,
   },
   {
-    "stevearc/dressing.nvim",
-    cond = enabled(group, "dressing"),
-    event = "VeryLazy",
-  },
-  {
     "lewis6991/gitsigns.nvim",
     cond = enabled(group, "gitsigns"),
     event = "VimEnter",
@@ -80,9 +75,17 @@ local plugins = {
     event = "VimEnter",
   },
   {
-    "folke/neodev.nvim",
-    cond = enabled(group, "neodev"),
+    "folke/lazydev.nvim",
+    cond = enabled(group, "lazydev"),
     event = "VeryLazy",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
   },
   {
     "karb94/neoscroll.nvim",
@@ -254,9 +257,6 @@ local plugins = {
     "ahmedkhalf/project.nvim",
     cond = enabled(group, "project"),
     event = "VimEnter",
-    config = function()
-      require("project_nvim").setup()
-    end,
   },
   {
     "tiagovla/scope.nvim",

@@ -1,8 +1,5 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-
-local notify_info = require("config.utils").notify_info
-
 local exist, custom_config = pcall(require, "custom.custom_config")
 local group = exist and type(custom_config) == "table" and custom_config.autocommands or {}
 local plugin = exist and type(custom_config) == "table" and custom_config.enable_plugins or {}
@@ -99,9 +96,9 @@ autocmd("BufEnter", {
   callback = function()
     local layout = vim.api.nvim_call_function("winlayout", {})
     if
-        layout[1] == "leaf"
-        and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "Trouble"
-        and layout[3] == nil
+      layout[1] == "leaf"
+      and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "Trouble"
+      and layout[3] == nil
     then
       vim.cmd("confirm quit")
     end
@@ -169,9 +166,9 @@ autocmd("BufWinEnter", {
       "",
     }
     if
-        not vim.bo.modifiable
-        or vim.tbl_contains(ignoredFT, vim.bo.filetype)
-        or not (vim.fn.expand("%:p"):find("^/"))
+      not vim.bo.modifiable
+      or vim.tbl_contains(ignoredFT, vim.bo.filetype)
+      or not (vim.fn.expand("%:p"):find("^/"))
     then
       return
     end
