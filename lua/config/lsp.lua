@@ -1,100 +1,88 @@
-require("mason").setup()
-require("mason-lspconfig").setup({
-  handlers = {
-    function(server_name)
-      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      local exist, custom_config = pcall(require, "custom.custom_config")
-      local configs = exist and type(custom_config) == "table" and custom_config.lsp_configs or {}
-      local config = type(configs) == "table" and configs[server_name] or {}
-      local capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-      require("lspconfig")[server_name].setup({
-        capabilities = capabilities,
-        config = config,
-      })
+local exist, custom_config = pcall(require, "custom.custom_config")
+local group = exist and type(custom_config) == "table" and custom_config.enable_plugins or {}
+local enabled = require("config.utils").enabled
+
+if enabled(group, "lsp") then
+  require("mason").setup()
+  require("mason-lspconfig").setup({
+    handlers = {
+      function(server_name)
+        -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+        local exist, custom_config = pcall(require, "custom.custom_config")
+        local configs = exist and type(custom_config) == "table" and custom_config.lsp_configs or {}
+        local config = type(configs) == "table" and configs[server_name] or {}
+        local capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+        require("lspconfig")[server_name].setup({
+          capabilities = capabilities,
+          config = config,
+        })
+      end,
+    },
+  })
+
+  vim.api.nvim_create_autocmd("LspAttach", {
+    desc = "LSP actions",
+    callback = function(event)
+      local opts = { buffer = event.buf }
+      vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
+      vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
+      vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
+      vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
+      vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
+      vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
+      vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
+      vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+      vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
+      vim.keymap.set("n", "<F4>", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
     end,
-  },
-})
+  })
 
-vim.api.nvim_create_autocmd("LspAttach", {
-  desc = "LSP actions",
-  callback = function(event)
-    local opts = { buffer = event.buf }
-    vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
-    vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
-    vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
-    vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
-    vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
-    vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
-    vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
-    vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-    vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
-    vim.keymap.set("n", "<F4>", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
-  end,
-})
-
-vim.diagnostic.config({
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = "✘",
-      [vim.diagnostic.severity.WARN] = "▲",
-      [vim.diagnostic.severity.HINT] = "⚑",
-      [vim.diagnostic.severity.INFO] = "»",
+  vim.diagnostic.config({
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = "✘",
+        [vim.diagnostic.severity.WARN] = "▲",
+        [vim.diagnostic.severity.HINT] = "⚑",
+        [vim.diagnostic.severity.INFO] = "»",
+      },
     },
-  },
-})
+  })
+end
 
-require("blink.cmp").setup({
-  -- 'default' for mappings similar to built-in completion
-  -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
-  -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-  -- See the full "keymap" documentation for information on defining your own keymap.
-  keymap = {
-    -- set to 'none' to disable the 'default' preset
-    preset = "enter",
-
-    -- disable a keymap from the preset
-    -- ['<C-e>'] = {},
-
-    -- show with a list of providers
-    -- ["<C-space>"] = {
-    --   function(cmp)
-    --     cmp.show({ providers = { "snippets" } })
-    --   end,
-    -- },
-
-    --
-    -- -- control whether the next command will be run when using a function
-    -- ['<C-n>'] = {
-    --   function(cmp)
-    --     if some_condition then return end -- runs the next command
-    --     return true -- doesn't run the next command
-    --   end,
-    --   'select_next'
-    -- },
-  },
-  appearance = {
-    -- Sets the fallback highlight groups to nvim-cmp's highlight groups
-    -- Useful for when your theme doesn't support blink.cmp
-    -- Will be removed in a future release
-    use_nvim_cmp_as_default = true,
-    -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-    -- Adjusts spacing to ensure icons are aligned
-    nerd_font_variant = "normal",
-  },
-  completion = {
-    list = { selection = { preselect = true, auto_insert = true } },
-    ghost_text = {
-      enabled = true,
-      -- Show the ghost text when an item has been selected
-      show_with_selection = true,
-      -- Show the ghost text when no item has been selected, defaulting to the first item
-      show_without_selection = false,
+if enabled(group, "cmp") then
+  require("blink.cmp").setup({
+    -- 'default' for mappings similar to built-in completion
+    -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+    -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+    -- See the full "keymap" documentation for information on defining your own keymap.
+    keymap = {
+      -- set to 'none' to disable the 'default' preset
+      preset = "enter",
     },
-  },
-  cmdline = {
-    enabled = false,
-  },
-})
+    appearance = {
+      -- Sets the fallback highlight groups to nvim-cmp's highlight groups
+      -- Useful for when your theme doesn't support blink.cmp
+      -- Will be removed in a future release
+      use_nvim_cmp_as_default = true,
+      -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+      -- Adjusts spacing to ensure icons are aligned
+      nerd_font_variant = "mono",
+    },
+    completion = {
+      list = { selection = { preselect = true, auto_insert = true } },
+      ghost_text = {
+        enabled = true,
+        -- Show the ghost text when an item has been selected
+        show_with_selection = true,
+        -- Show the ghost text when no item has been selected, defaulting to the first item
+        show_without_selection = false,
+      },
+    },
+    cmdline = {
+      enabled = false,
+    },
+  })
+end
 
 -- local cmp = require("cmp")
 -- local lspkind = require("lspkind")
