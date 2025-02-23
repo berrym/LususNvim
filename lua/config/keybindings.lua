@@ -198,25 +198,6 @@ if enabled(group, "notify") then
   vim.keymap.set("i", "<ESC>", "<CMD>lua require('notify').dismiss()<CR><ESC>")
 end
 
--- More LSP stuff
-if enabled(group, "lsp_zero") then
-  _G.buf = vim.lsp.buf
-  -- lsp agnostic global rename
-  vim.keymap.set("n", "rg", ":%s/<C-r><C-w>//g<Left><Left>", { desc = "global substitution" })
-  vim.keymap.set("n", "gD", "<CMD>lua buf.declaration()<CR>")
-  vim.keymap.set("n", "gd", "<CMD>lua buf.definition()<CR>")
-  vim.keymap.set("n", "gi", "<CMD>lua buf.implementation()<CR>")
-  vim.keymap.set("n", "gr", "<CMD>Telescope lsp_references<CR>")
-  vim.keymap.set("n", "sh", "<CMD>lua buf.signature_help()<CR>")
-  vim.keymap.set("n", "<leader>rn", "<CMD>lua buf.rename()<CR>")
-  vim.keymap.set("n", "<leader>ca", "<CMD>lua buf.code_action()<CR>")
-  vim.keymap.set(
-    "n",
-    "<C-k>",
-    "<CMD>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>"
-  )
-end
-
 -- Session
 if enabled(group, "session_manager") then
   vim.keymap.set("n", "<leader>s", "", { desc = "Sessions" })
