@@ -198,7 +198,7 @@ if enabled(group, "notify") then
   vim.keymap.set("i", "<ESC>", "<CMD>lua require('notify').dismiss()<CR><ESC>")
 end
 
--- Session
+-- SessionManager
 if enabled(group, "session_manager") then
   vim.keymap.set("n", "<leader>s", "", { desc = "Sessions" })
   vim.keymap.set("n", "<leader>ss", "<CMD>SessionManager save_current_session<CR>")
