@@ -40,6 +40,13 @@ if enabled(group, "dap") then
     --- @return string|nil A text how the virtual text should be displayed or nil, if this variable shouldn't be displayed
     display_callback = function(variable, buf, stackframe, node, options)
       -- by default, strip out new line characters
+      if not buf or not stackframe or not node then
+        require("config.utils").notify_warn(
+          "missing parameter(s) in display_callback",
+          "nvim-dap-virtual-text"
+        )
+        return nil
+      end
       if options.virt_text_pos == "inline" then
         return " = " .. variable.value:gsub("%s+", " ")
       else
