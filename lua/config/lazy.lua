@@ -307,6 +307,10 @@ local plugins = {
     },
   },
   {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+  {
     "folke/zen-mode.nvim",
     cond = enabled(group, "zen"),
     cmd = "ZenMode",
