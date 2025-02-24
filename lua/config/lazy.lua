@@ -307,14 +307,6 @@ local plugins = {
     },
   },
   {
-    "windwp/windline.nvim",
-    cond = enabled(group, "windline"),
-    event = "VeryLazy",
-    config = function()
-      require("wlsample.evil_line")
-    end,
-  },
-  {
     "folke/zen-mode.nvim",
     cond = enabled(group, "zen"),
     cmd = "ZenMode",
