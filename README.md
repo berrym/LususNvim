@@ -23,7 +23,7 @@ v0.1.0
 - Make sure you have installed the latest version of Neovim v0.10.0+.
 - Have `git`, `make`, `pip`, `python`, `npm`, `node`, `cargo` and `ripgrep` installed on your system.
 - Resolve `EACCESS` permissions with npm https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
-
+- A Nerd Nont is necessary for proper rendering.
 
 ## Optional Prerequisites
 
@@ -71,6 +71,7 @@ Alternatively use my own custom config as a starting point.
 - After installation run nvim and let LususNvim download and configure it's requirements.
 - This process can take several minutes so be patient.
 - After the initial setup has finished close nvim then reopen it.
+  - You may have luck after installation just openening the start menu, `<leader>;`
 
 
 ## Basic usage
