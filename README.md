@@ -23,7 +23,7 @@ v0.1.0
 - Make sure you have installed the latest version of Neovim v0.10.0+.
 - Have `git`, `make`, `pip`, `python`, `npm`, `node`, `cargo` and `ripgrep` installed on your system.
 - Resolve `EACCESS` permissions with npm https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
-- A Nerd Nont is necessary for proper rendering.
+- A Nerd font is necessary for proper rendering.
 
 ## Optional Prerequisites
 
